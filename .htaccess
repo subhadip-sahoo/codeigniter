@@ -1,0 +1,12 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$  /SMGHealthAdmin/php/index.php/$1 [L]
+
+
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+#RewriteRule (index.php) https://%{HTTP_HOST}%{REQUEST_URI}
