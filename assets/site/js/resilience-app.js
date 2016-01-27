@@ -10,6 +10,17 @@ smgapp.controller('add-depts', function($scope){
     };
 });
 
+smgapp.controller('add-locs', function($scope){
+    $scope.locations = [];
+    $scope.addNewLoc = function(){
+        var newItem = $scope.locations.length + 1;
+        $scope.locations.push({name: 'organization_location[]', id:'organization_location_' + newItem, placeholder: 'Locations', value: ''});
+    };
+    $scope.removeLoc = function($index){
+        $scope.locations.splice($index, 1);
+    };
+});
+
 smgapp.controller('add-levels', function($scope){
     $scope.levels = [];
     $scope.addNewLevel = function(){

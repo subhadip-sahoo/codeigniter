@@ -55,6 +55,12 @@ $route['translate_uri_dashes'] = TRUE;
 
 /* Custom routes */
 $route['register'] = 'register/registration';
+$route['register/(:any)'] = 'register/registration/$1';
 $route['login'] = 'login/login';
+$route['forgot-password'] = 'login/forgot_password';
+$route['reset-password/(:any)/(:any)'] = 'login/reset_password/$1/$2';
 $route['organization/(:any)'] = 'organization/index/$1';
 $route['organization/(:any)/(:any)'] = 'organization/organization_activites/$1/$2';
+$route['pdfcreate/(:any)/(:any)'] = 'pdfcreate/index/$1/$2';
+$route['article/(:any)'] = 'manage_content/show/$1';
+$route['thank-you'] = 'survey/thank_you';

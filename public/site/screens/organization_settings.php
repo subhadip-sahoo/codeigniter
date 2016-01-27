@@ -1,15 +1,15 @@
 <div class="dase_bord">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3 dasboard_menu"> 
+<!--            <div class="col-md-3 dasboard_menu"> 
                 <ul class="nav dasboard_nav">
                     <li><a href="<?php echo base_url("organization/$permalink"); ?>"><i class="fa fa-users"></i>Home</a></li>
                     <li><a href="<?php echo base_url("organization/$permalink/share-link"); ?>"><i class="fa fa-clipboard"></i>Share Link</a></li>
                     <li class="active"><a href="<?php echo base_url("organization/$permalink/settings"); ?>"><i class="fa fa-pencil-square-o"></i>Settings</a></li>
                 </ul>
-            </div>
-            <div class="col-md-9  dasboard_detasl">
-                <section class="dase_orgat">
+            </div>-->
+            <div class="col-md-12">
+<!--                <section class="dase_orgat">
                     <?php 
                         if($this->session->has_userdata('suc_msg')){
                             echo message_alert($this->session->userdata('suc_msg'), 2);
@@ -20,8 +20,8 @@
                             $this->session->unset_userdata('err_msg');
                         }
                     ?>
-                    <?php echo (isset($authentication_failed)) ? message_alert($authentication_failed, 4) : ''; ?>
-                    <?php echo (isset($error) && $error == 'update_org_form')? validation_errors() : ''; ?>
+                    <?php //echo (isset($authentication_failed)) ? message_alert($authentication_failed, 4) : ''; ?>
+                    <?php //echo (isset($error) && $error == 'update_org_form')? validation_errors() : ''; ?>
                     <h2>Organization Settings</h2>
                     <form class="form-horizontal" action="settings" name="add_organization" id="add_organization" method="POST">
                         <div ng-controller="permalinkCltr">
@@ -48,6 +48,36 @@
                                     <span id="not-unique" style="color:red; display: none;">Organization url should be unique. Provided permalink has been already exist.</span>
                                 </div>
                             </div>
+                        </div>
+                        <div ng-controller="add-locs">
+                            <?php 
+                                if(isset($organization_location) && is_array($organization_location)):
+                                $count = 0;
+                                foreach($organization_location as $org_depts): $count++;?>
+                            <div class="form-group" id="dept-<?php echo $count;?>">
+                                <label for="inputTeam" class="col-sm-3 control-label"><?php echo ($count > 1) ? '' : 'Location of organization'; ?></label>
+                                <div class="col-sm-8">
+                                    <input type="text" required class="form-control" id="organization_location" name="organization_location[]" placeholder="Teams or departments" value="<?php echo $org_depts; ?>">
+                                </div>
+                                <div class="col-sm-1">
+                                    <?php if($count == 1): ?>
+                                    <button type="button" class="btn btn-default btn-primary" ng-click="addNewLoc();"><i class="glyphicon glyphicon-plus"></i></button>
+                                    <?php else: ?>
+                                    <a href="javascript:void(0);" title="remove" class="btn btn-primary remove-data" data-parent="#loc-<?php echo $count;?>"><i class="glyphicon glyphicon-minus"></i></a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                            <div class="form-group" ng-repeat="loc in locations track by $index">
+                                <label for="inputTeam" class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                    <input type="text" required class="form-control" id="{{loc.id}}" name="{{loc.name}}" placeholder="{{loc.placeholder}}" ng-model="loc.value">
+                                </div>
+                                <div class="col-sm-1">
+                                    <a href="javascript:void(0);" title="remove" class="btn btn-primary" ng-click="removeLoc($index);"><i class="glyphicon glyphicon-minus"></i></a>
+                                </div>
+                            </div>
+                            <?php endif; ?>
                         </div>
                         <div ng-controller="add-depts">
                             <?php 
@@ -131,12 +161,23 @@ add_organization.organization_url.$dirty && add_organization.organization_url.$i
                             </div>
                         </div>
                     </form>          
-                </section>
+                </section>-->
                 <section class="dase_orgat">
+                    <?php 
+                        if($this->session->has_userdata('suc_msg')){
+                            echo message_alert($this->session->userdata('suc_msg'), 2);
+                            $this->session->unset_userdata('suc_msg');
+                        }
+                        if($this->session->has_userdata('err_msg')){
+                            echo message_alert($this->session->userdata('err_msg'), 4);
+                            $this->session->unset_userdata('err_msg');
+                        }
+                    ?>
                     <?php echo (isset($error) && $error == 'update_email_form')? validation_errors() : ''; ?>
-                    <h2>Account Settings</h2>
-                    <fieldset>
-                        <lagent>Change Email</lagent>
+                    <article class="setting-blocks">
+                        <header class="pagetitle">
+                            <h2>Change Email</h2>
+                        </header>
                         <form class="form-horizontal" action="settings" name="change_email" id="change_email" method="POST">
                             <div class="form-group">
                                 <label for="emailAddress" class="col-sm-3 control-label">Email of organization</label>
@@ -156,13 +197,27 @@ add_organization.organization_url.$dirty && add_organization.organization_url.$i
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <input type="submit" class="btn btn-default" value="Submit" name="update_email" ng-disabled="change_email.user_email.$dirty && change_email.user_email.$invalid">
+                                    <input type="submit" class="btn btn-danger btn-submit" value="Submit" name="update_email" ng-disabled="change_email.user_email.$dirty && change_email.user_email.$invalid">
                                 </div>
                             </div>
                         </form> 
-                    </fieldset>
-                    <fieldset>
-                        <lagent>Change Password</lagent>
+                    </article>
+                </section>
+                <section class="dase_orgat">
+                    <?php 
+                        if($this->session->has_userdata('pass_suc_msg')){
+                            echo message_alert($this->session->userdata('pass_suc_msg'), 2);
+                            $this->session->unset_userdata('pass_suc_msg');
+                        }
+                        if($this->session->has_userdata('pass_err_msg')){
+                            echo message_alert($this->session->userdata('pass_err_msg'), 4);
+                            $this->session->unset_userdata('pass_err_msg');
+                        }
+                    ?>
+                    <article class="setting-blocks">
+                        <header class="pagetitle">
+                            <h2>Change Password</h2>
+                        </header>
                         <?php echo (isset($error) && $error == 'update_pass_form')? validation_errors() : ''; ?>
                         <form class="form-horizontal" action="settings" name="change_password" id="change_password" method="POST">
                             <div class="form-group">
@@ -188,11 +243,11 @@ add_organization.organization_url.$dirty && add_organization.organization_url.$i
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <input type="submit" class="btn btn-default" value="Submit" name="update_pass" >
+                                    <input type="submit" class="btn btn-danger btn-submit" value="Submit" name="update_pass" >
                                 </div>
                             </div>
                         </form> 
-                    </fieldset>
+                    </article>
                 </section>
             </div>
         </div>

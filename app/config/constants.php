@@ -97,3 +97,5 @@ define('DATETIME_QUERY_FORMAT', '%D %b, %Y at %r');
 define('DATE_QUERY_FORMAT', '%D %b, %Y');
 
 define('DOING_AJAX', 'DOING_AJAX');
+
+define('EMPLOYEE_SIDEBAR_PAR_PAGE_ITEM', 5);

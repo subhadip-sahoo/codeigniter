@@ -1,5 +1,5 @@
-<footer>
-    <div class="container">
+<footer class="footer-container clearfix">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <p class="text-center">&copy; SMG Health 2015. All rights reserved.</p>
@@ -10,10 +10,14 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
 <script>window.jQuery || document.write('<script src="<?php echo SITE_ASSETS_URI; ?>/js/jquery.min.js"><\/script>')</script>
-<script src="<?php echo SITE_ASSETS_URI; ?>/js/angular.min.js"></script> 
-<script src="<?php echo SITE_ASSETS_URI; ?>/js/bootstrap.min.js"></script> 
+<script src="<?php echo SITE_ASSETS_URI; ?>/js/angular.min.js"></script>
+<script src="<?php echo SITE_ASSETS_URI; ?>/js/jPages.min.js"></script>
+<script src="<?php echo SITE_ASSETS_URI; ?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo SITE_ASSETS_URI; ?>/js/bootstrap.min.js"></script>
+<script src="<?php echo SITE_ASSETS_URI; ?>/js/jquery-ui.js"></script>
 <script src="<?php echo SITE_ASSETS_URI; ?>/js/resilience-app.js"></script> 
-<script src="<?php echo SITE_ASSETS_URI; ?>/js/resilience.js"></script> 
+<script src="<?php echo SITE_ASSETS_URI; ?>/js/resilience.js"></script>
+
 <script type="text/javascript">
     function htmlbodyHeightUpdate(){
         var height3 = $( window ).height();
@@ -39,5 +43,6 @@
         });
     });
 </script>
+
 </body>
 </html>

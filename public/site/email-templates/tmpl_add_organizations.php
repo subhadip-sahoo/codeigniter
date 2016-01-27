@@ -29,7 +29,7 @@
                 <td style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000000">
                     <p>Your login credentials are as follows</p>
                     <p>Email id: <?php echo $email;?><br/>
-                    OTP (One Time Password): <?php echo $otp;?></p>
+                    Password: <?php echo $otp;?></p>
                     <p></p>
                 </td>
             </tr>

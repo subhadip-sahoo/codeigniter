@@ -28,5 +28,82 @@
             var element = $(this).data('parent');
             $(element).remove();
         });
+        
+        $( "#tabs" ).tabs();
+        
+        $(document).delegate('form#surveyFrm .prev', 'click', function(){
+            var question = $(this).data('question');
+            $('div.frm').hide('fast');
+            $('div#'+question+'').show('slow');
+        });
+        
+        $(document).delegate('form#surveyFrm .next', 'click', function(){
+            var question = $(this).data('question');
+            var current = $(this).data('current');
+            if($('input[type=radio][name=answer_' + current + ']').is(':checked') == false){
+                $('#surveyWarningModal').modal();     
+                return false;
+            }
+            $('div.frm').hide('fast');
+            $('div#'+question+'').show('slow');
+        });
+        
+        $('#review-btn').click(function(){
+            var current = $(this).data('current');
+            if($('input[type=radio][name=answer_' + current + ']').is(':checked') == false){
+                $('#surveyWarningModal').modal(); 
+                return false;
+            }
+            $('.review-box').hide('fast');
+            $('#submit-box').show('slow');
+            $('div.frm').show('slow');
+        });
+        
+        $('#page_slug').bind('focus',function(){
+            var title = $('#page_title').val();
+            title = title.replace(/[&\/\\#,+()@_$~%.'":*?<>{}]/g, '');
+            title = title.replace(/[, ]+/g, ' ').trim();
+            var words = title.split(' ');
+            var str = words.join('-');
+            $(this).val(str.toLowerCase());
+        });
+        
+        $('#videoModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var title = button.data('title');
+            var url = button.data('url');
+            var modal = $(this);
+            modal.find('iframe').attr('src', url);
+            modal.find('.modal-title').text(title);
+        });
+        
+        $('#page-box-jpages').jPages({
+            containerID : "page-box", 
+            perPage: EMPLOYEE_SIDEBAR_PAR_PAGE_ITEM,
+            links: "blank",
+            previous: "←",
+            next: "→"
+        }); 
+        $('#video-box-jpages').jPages({
+            containerID : "video-box", 
+            perPage: EMPLOYEE_SIDEBAR_PAR_PAGE_ITEM,
+            links: "blank",
+            previous: "←",
+            next: "→"
+        }); 
+        $('#doc-box-jpages').jPages({
+            containerID : "doc-box", 
+            perPage: EMPLOYEE_SIDEBAR_PAR_PAGE_ITEM,
+            links: "blank",
+            previous: "←",
+            next: "→"
+        }); 
+        $('#report-box-jpages').jPages({
+            containerID : "report-box", 
+            perPage: EMPLOYEE_SIDEBAR_PAR_PAGE_ITEM,
+            links: "blank",
+            previous: "←",
+            next: "→"
+        }); 
     });
 })(jQuery);

@@ -18,7 +18,8 @@ class Dashboard extends CI_Controller {
                 $this->load->model('site_model');
                 if($orgs = $this->site_model->get_organizations()){
                     $data['orgs'] = $orgs;
-                }else{
+                    //$data['countoforgs'] = $this->site_model->get_countoforgs($id_user);
+               }else{
                     $data['orgs'] = 'No organizaion added.';
                 }
                 $header['title'] = 'Admin Dashboard';
@@ -27,18 +28,22 @@ class Dashboard extends CI_Controller {
                 $data['template'] = 'site/screens/dashboard_siteadmin';
                 $this->load->view('site/master_layout', $data);
                 break;
-            case 2:
+            case 2: 
                 $this->load->model('site_model');
+//                get_product($this->session->userdata('id_user'));
                 if($permalink = $this->site_model->check_user_details($this->session->userdata('id_user'), 'organization_url')){
                     redirect("organization/$permalink");
                     exit();
-                }else {
+                }else{
                     $this->session->set_userdata('err_msg', 'The permalink is not unique.');
                     $this->logout();
                 }
                 break;
-            case 3:
-                $header['title'] = 'Registration';
+            case 3:                
+                $data['sidebar'] = get_employee_sidebar();
+                $data['id_user'] = $this->session->userdata('id_user');
+//                $data['surveylist'] = $this->survey_model->getsurveyreport($this->session->userdata('id_user'));
+                $header['title'] = 'Dashboard';
                 $header['display_name'] = $this->session->userdata('display_name');
                 $data['header'] = $header;
                 $data['template'] = 'site/screens/dashboard_employee';
@@ -61,16 +66,19 @@ class Dashboard extends CI_Controller {
             $this->form_validation->set_error_delimiters('<div role="alert" class="alert alert-danger alert-dismissibl"><button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">X</span></button>', '</div>'); 
             $this->form_validation->set_rules('organization_name', 'Organization Name', 'trim|required');
             $this->form_validation->set_rules('organization_url', 'Organization URL', 'trim|required');
+            $this->form_validation->set_rules('organization_location[]', 'Organization Location', 'trim|required');
             $this->form_validation->set_rules('organization_depertments[]', 'Organization Departments', 'trim|required');
             $this->form_validation->set_rules('organization_levels[]', 'Organization Levels', 'trim|required');
-            $this->form_validation->set_rules('organization_location', 'Organization Location', 'trim|required');
             $this->form_validation->set_rules('user_email', 'Email Address', 'trim|required|valid_email|is_unique[smg_users.user_email]');
+            $this->form_validation->set_rules('product', 'Organization Product', 'trim|required');
             
             if($this->form_validation->run() == FALSE){
                 $header['title'] = 'Add organization';
                 $header['display_name'] = $this->session->userdata('display_name');
+                $data['locations'] = $this->input->post('organization_location[]', TRUE);
                 $data['departments'] = $this->input->post('organization_depertments[]', TRUE);
-                $data['levels'] = $this->input->post('organization_levels[]', TRUE);
+                $data['levels'] = $this->input->post('organization_levels', TRUE);
+                $data['product'] = $this->input->post('product', TRUE);
                 $data['header'] = $header;
                 $data['template'] = 'site/screens/add_organization';
                 $this->load->view('site/master_layout', $data);
@@ -83,6 +91,7 @@ class Dashboard extends CI_Controller {
                     'user_email' => $this->input->post('user_email', TRUE),
                     'user_type' => 2,
                     'password' => md5($otp),
+                    'product' => $this->input->post('product'),
                     'created_at' => date(DATETIME_DATABASE_FORMAT),
                     'updated_at' => date(DATETIME_DATABASE_FORMAT)
                 );
@@ -91,8 +100,14 @@ class Dashboard extends CI_Controller {
                     $this->site_model->add_user_details($uid, 'organization_url', $this->input->post('organization_url', TRUE));
                     $this->site_model->add_user_details($uid, 'organization_depertments', implode(',', $this->input->post('organization_depertments', TRUE)));
                     $this->site_model->add_user_details($uid, 'organization_levels', implode(',', $this->input->post('organization_levels', TRUE)));
-                    $this->site_model->add_user_details($uid, 'organization_location', $this->input->post('organization_location', TRUE));
+                    $this->site_model->add_user_details($uid, 'organization_location', implode(',',$this->input->post('organization_location', TRUE)));
                     $this->site_model->add_user_details($uid, 'otp_used', 0);
+                    $this->site_model->add_user_details($uid, 'head_office_location', $this->input->post('head_office_location', TRUE));
+                    $this->site_model->add_user_details($uid, 'total_number_emp', $this->input->post('total_number_emp', TRUE));
+                    $this->site_model->add_user_details($uid, 'program_manager_name', $this->input->post('program_manager_name', TRUE));
+                    $this->site_model->add_user_details($uid, 'program_manager_telephone', $this->input->post('program_manager_telephone', TRUE));
+                    $this->site_model->add_user_details($uid, 'program_manager_mobile', $this->input->post('program_manager_mobile', TRUE));
+                    $this->site_model->add_user_details($uid, 'program_manager_email', $this->input->post('program_manager_email', TRUE));
                     /* Email script to organization */
                     $this->load->library('email');
                     $config['mailtype'] = 'html';
@@ -106,7 +121,7 @@ class Dashboard extends CI_Controller {
                     $msg['url'] = $this->input->post('organization_url', TRUE);
                     $msg['depts'] = implode(', ', $this->input->post('organization_depertments', TRUE));
                     $msg['levels'] = implode(', ', $this->input->post('organization_levels', TRUE));
-                    $msg['location'] = $this->input->post('organization_location', TRUE);
+                    $msg['location'] = implode(', ',$this->input->post('organization_location', TRUE));
                     $msg['email'] = $this->input->post('user_email', TRUE);
                     $msg['otp'] = $otp;
                     
@@ -125,11 +140,236 @@ class Dashboard extends CI_Controller {
                 }
             }
         }else{
+            $this->load->model('site_model');
             $header['title'] = 'Add organization';
             $header['display_name'] = $this->session->userdata('display_name');
             $data['header'] = $header;
+            $data['product'] = $this->site_model->get_product();
             $data['template'] = 'site/screens/add_organization';
             $this->load->view('site/master_layout', $data);
+        }
+    }
+	
+    public function add_video(){
+        if($this->input->post('add_video') <> NULL){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('video_title', 'Video Title', 'trim|required');
+            $this->form_validation->set_rules('video_name', 'Video Embedded URL', 'trim|required');
+            if($this->form_validation->run() == FALSE) {
+                $header['title'] = 'Add video';
+                $header['display_name'] = $this->session->userdata('display_name');
+                $data['header'] = $header;
+                $data['template'] = 'site/screens/add_video';
+                $this->load->view('site/master_layout', $data);
+            }else{
+                $data = array( 
+                    'video_title' => $this->input->post('video_title', TRUE),
+                    'video_name' => $this->input->post('video_name', TRUE)
+                );
+                $this->load->model('Video_model');
+                $this->Video_model->insert($data);
+                $this->session->set_userdata('suc_msg', 'Video has been successfully added.');
+                redirect("manage-video");
+                exit();
+                $this->session->set_userdata('err_msg', 'There is an error occured. Please try again later.');
+                redirect('dashboard/add-organization');
+                exit();
+            }
+        }
+        else{		   
+            $header['title'] = 'Add video';
+            $header['display_name'] = $this->session->userdata('display_name');
+            $data['header'] = $header;
+            $data['template'] = 'site/screens/add_video';
+            $this->load->view('site/master_layout', $data);
+        }
+    }
+	 
+    public function add_pdf(){
+        $header['title'] = 'Add pdf';
+        $header['display_name'] = $this->session->userdata('display_name');
+        $data['header'] = $header;
+        $data['template'] = 'site/screens/add_pdf';
+        $this->load->view('site/master_layout', $data);
+    }
+
+    public function do_upload(){
+        $this->load->helper('form');
+        $config = array(
+            'upload_path' => "./assets/site/pdf/",
+            'allowed_types' => "pdf",
+            'overwrite' => FALSE
+                //'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                //'max_height' => "768",
+                //'max_width' => "1024"
+        );
+        //print_r($config);die;
+        $this->load->library('upload', $config);
+
+        if($this->upload->do_upload()){   
+            echo "success";
+            $upload_data = $this->upload->data();
+
+            $insert_data =  array(
+                'pdf_name' =>$upload_data['file_name']
+            );
+            $this->db->insert('smg_pdf', $insert_data);
+
+            $this->session->set_userdata('pdf_suc_msg', 'Pdf has been successfully added.');
+            redirect("manage-pdf");
+            exit();
+        }
+        else{
+            $this->session->set_userdata('pdf_err_msg', 'There is an error occured. Please try again later.');
+            redirect("dashboard/add_pdf");
+        }
+    }
+
+    function delete_organization(){
+        $id = $this->uri->segment(3);
+        $this->load->model('site_model');
+        $this->site_model->delete_org($id);
+        $this->session->set_userdata('suc_msg', 'Delete Organization Sucessfully');
+        redirect("dashboard");
+        exit();
+    }
+    
+    public function settings(){        
+        if($this->input->post('update_email') <> NULL){
+            $this->load->model('site_model');
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters('<div role="alert" class="alert alert-danger alert-dismissibl"><button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">X</span></button>', '</div>'); 
+            $this->form_validation->set_rules('user_email', 'Email address', 'trim|required|valid_email|is_unique[smg_users.user_email]');
+
+            if($this->form_validation->run() == FALSE){
+                if($userdata = $this->site_model->get_userdata($this->session->userdata('id_user'))){
+                    $data['user_email'] = $this->input->post('user_email', TRUE);
+                }
+                $data['sidebar'] = get_employee_sidebar();
+                $data['id_user'] = $this->session->userdata('id_user');
+                $header['title'] = 'Settings';
+                $header['display_name'] = $this->session->userdata('display_name');
+                $data['error'] = 'update_email_form';
+                $data['header'] = $header;
+                $data['template'] = 'site/screens/employee_settings';
+                $this->load->view('site/master_layout', $data);
+            }else{
+                $this->load->model('site_model');
+                $user_data = array(
+                    'user_email' => $this->input->post('user_email', TRUE),
+                    'updated_at' => date(DATETIME_DATABASE_FORMAT)
+                );
+                $condition = array(
+                    'id_user' => $this->session->userdata('id_user')
+                );
+                $permalink = $this->uri->segment(2);
+                if($this->site_model->update('smg_users', $user_data, $condition)){
+                    $this->session->set_userdata('suc_msg', 'Email has been successfully updated.');
+                    redirect("dashboard/settings");
+                    exit();
+                }else{
+                    $this->session->set_userdata('err_msg', 'There is an error occured. Please try again later.');
+                    redirect("dashboard/settings");
+                    exit();
+                }
+            }
+        }else if($this->input->post('update_pass') <> NULL){
+            $this->load->model('site_model');
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters('<div role="alert" class="alert alert-danger alert-dismissibl"><button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">X</span></button>', '</div>'); 
+            $this->form_validation->set_rules('cur_pass', 'Current  password', 'trim|required');
+            $this->form_validation->set_rules('new_pass', 'New pasword', 'trim|required');
+            $this->form_validation->set_rules('con_pass', 'Confirm password', 'trim|required|matches[new_pass]');
+
+            if($this->form_validation->run() == FALSE){
+                if($userdata = $this->site_model->get_userdata($this->session->userdata('id_user'))){
+                    $data['user_email'] = $userdata->user_email;
+                }
+                $data['sidebar'] = get_employee_sidebar();
+                $data['id_user'] = $this->session->userdata('id_user');
+                $header['title'] = 'Settings';
+                $header['display_name'] = $this->session->userdata('display_name');
+                $data['error'] = 'update_pass_form';
+                $data['header'] = $header;
+                $data['template'] = 'site/screens/employee_settings';
+                $this->load->view('site/master_layout', $data);
+            }else{
+                $this->load->model('site_model');
+                if($this->site_model->check_pass($this->session->userdata('id_user'), md5($this->input->post('cur_pass')))){
+                    $user_data = array(
+                        'password' => md5($this->input->post('new_pass', TRUE)),
+                        'updated_at' => date(DATETIME_DATABASE_FORMAT)
+                    );
+                    $condition = array(
+                        'id_user' => $this->session->userdata('id_user')
+                    );
+                    if($this->site_model->update('smg_users', $user_data, $condition)){
+                        $this->session->set_userdata('pass_suc_msg', 'Password has been successfully updated.');
+                        redirect("dashboard/settings");
+                        exit();
+                    }else{
+                        $this->session->set_userdata('pass_err_msg', 'There is an error occured. Please try again later.');
+                        redirect("dashboard/settings");
+                        exit();
+                    }
+                }else{
+                    $this->session->set_userdata('pass_err_msg', 'Current password does not match');
+                    redirect("dashboard/settings");
+                    exit();
+                }
+            }
+        }else{
+            $this->load->model('site_model');
+            if($userdata = $this->site_model->get_userdata($this->session->userdata('id_user'))){
+                $data['user_email'] = $userdata->user_email; 
+            }
+            $data['sidebar'] = get_employee_sidebar();
+            $data['id_user'] = $this->session->userdata('id_user');
+            $header['title'] = 'Settings';
+            $header['display_name'] = $this->session->userdata('display_name');
+            $data['header'] = $header;
+            $data['template'] = 'site/screens/employee_settings';
+            $this->load->view('site/master_layout', $data);
+        }
+    }
+    
+    public function inactive_user(){
+        $user_id = $this->uri->segment(3);
+        $this->load->model('site_model');
+        if($this->site_model->update('smg_users', array('user_status' => 'I'), array('id_user' => $user_id))){
+            $this->session->set_userdata('suc_meg', 'User has been successfully updated');
+            redirect("dashboard");
+            exit();
+        }
+    }
+    
+    public function active_user(){
+        $user_id = $this->uri->segment(3);
+        $this->load->model('site_model');
+        if($this->site_model->update('smg_users', array('user_status' => 'A'), array('id_user' => $user_id))){
+            $this->session->set_userdata('suc_meg', 'User has been successfully updated');
+            redirect("dashboard");
+            exit();
+        }
+    }
+    
+    public function inactive_employee(){
+        $user_id = $this->uri->segment(3);
+        $this->load->model('site_model');
+        if($this->site_model->update('smg_users', array('user_status' => 'I'), array('id_user' => $user_id))){
+            $this->session->set_userdata('suc_meg', 'User has been successfully updated');
+            redirect("manage-users");
+            exit();
+        }
+    }
+    
+    public function active_employee(){
+        $user_id = $this->uri->segment(3);
+        $this->load->model('site_model');
+        if($this->site_model->update('smg_users', array('user_status' => 'A'), array('id_user' => $user_id))){
+            $this->session->set_userdata('suc_meg', 'User has been successfully updated');
+            redirect("manage-users");
+            exit();
         }
     }
 }

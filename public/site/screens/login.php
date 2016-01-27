@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>SMGHealth</title>
-
+    <title>SMGHealth :: Login</title>
+    <link rel="shortcut icon" href="<?php echo SITE_ASSETS_URI; ?>/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?php echo SITE_ASSETS_URI; ?>/images/favicon.ico" type="image/x-icon">
     <!-- Bootstrap -->
     <link href="<?php echo SITE_ASSETS_URI; ?>/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo SITE_ASSETS_URI; ?>/css/font-awesome.css" rel="stylesheet">
@@ -60,17 +61,23 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <input type="submit" class="btn btn-lg btn-block login_buton" value="Login">
+                                                <button type="submit" class="btn btn-lg btn-block login_buton" value="Login">Login <i class="fa fa-sign-in"></i></button>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+<!--                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <input type="submit" class="btn btn-lg btn-block regist_buton" value="Register">
                                             </div>
-                                        </div>
-                                        <p class="text-center for_pass"><a href="#">Forgot Password?</a></p>
+                                        </div>-->
+                                        <div style="clear:both;"></div>
+                                        <p class="text-center for_pass">
+                                            <?php if(isset($_SESSION["org_slug"]) && $_SESSION["org_slug"] != ""){?>
+                                            <a href="<?php echo base_url('register')?>">Register</a> | 
+                                            <?php } ?>
+                                            <a href="<?php echo base_url('forgot-password'); ?>">Forgot Password?</a>
+                                        </p>
                                     </div>
                                 </fieldset>
                             </form>
@@ -90,9 +97,7 @@
         </div>
     </footer>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
-    <!-- Include all compiled plugins (below), or include individual files as needed --> 
     <script src="<?php echo SITE_ASSETS_URI; ?>/js/bootstrap.min.js"></script>
     </body>
 </html>
