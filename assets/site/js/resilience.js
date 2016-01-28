@@ -12,11 +12,13 @@
                         $this.siblings('span').remove();
                         $this.parent().append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span><span id="inputSuccess2Status" class="sr-only">(success)</span>');
                         $('#not-unique').hide();
+                        $('#add_org').removeAttr('disabled');
                     }else if(response = 'exists'){
                         $this.parent().removeClass().addClass('col-sm-3 has-error has-feedback');
                         $this.siblings('span').remove();
                         $this.parent().append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span><span id="inputError2Status" class="sr-only">(error)</span>');
                         $('#not-unique').show();
+                        $('#add_org').attr('disabled', 'disabled');
                     }
                 }
             });

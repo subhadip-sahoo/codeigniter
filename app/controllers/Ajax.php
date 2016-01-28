@@ -42,4 +42,12 @@ class Ajax extends CI_Controller {
             echo json_encode($data_arr);
         }
     }
+    
+    public function checkEmailUnique(){
+        if(!$this->site_model->get_row('smg_users', array('user_email' => $this->input->post_get('user_email')))){
+            echo 'unique';
+        }else{
+            echo 'exists';
+        }
+    }
 }

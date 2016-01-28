@@ -60,11 +60,45 @@ smgapp.controller('permalinkCltr', function($scope, $http){
                 $this.siblings('span').remove();
                 $this.parent().append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span><span id="inputSuccess2Status" class="sr-only">(success)</span>');
                 angular.element('#not-unique').hide();
+                $('#add_org').removeAttr('disabled');
             }else if(data = 'exists'){
                 $this.parent().removeClass().addClass('col-sm-3 has-error has-feedback');
                 $this.siblings('span').remove();
                 $this.parent().append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span><span id="inputError2Status" class="sr-only">(error)</span>');
                 angular.element('#not-unique').show();
+                $('#add_org').attr('disabled', 'disabled');
+            }
+        });
+    }
+    
+    $scope.checkUniqueEmail = function(){
+        var data = $.param({
+            action: DOING_AJAX, 
+            user_email: $scope.user_email
+        });
+        
+        var config = {
+            headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+            }
+        }
+        
+        $scope.unique = true;
+        $http.post(BASE_URL + 'ajax/checkEmailUnique', data, config).success(function(data){
+            var $this = angular.element('#user_email');
+            console.log(data);
+            if(data == 'unique'){
+                $this.parent().removeClass().addClass('col-sm-8 has-success has-feedback');
+                $this.siblings('span').remove();
+                $this.parent().append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span><span id="inputSuccess2Status" class="sr-only">(success)</span>');
+                angular.element('#email_exists').hide();
+                $('#add_org').removeAttr('disabled');
+            }else if(data = 'exists'){
+                $this.parent().removeClass().addClass('col-sm-8 has-error has-feedback');
+                $this.siblings('span').remove();
+                $this.parent().append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span><span id="inputError2Status" class="sr-only">(error)</span>');
+                angular.element('#email_exists').show();
+                $('#add_org').attr('disabled', 'disabled');
             }
         });
     }
