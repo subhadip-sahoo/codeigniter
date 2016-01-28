@@ -47,8 +47,8 @@
                             ?>
                             <?php echo (isset($authentication_failed)) ? message_alert($authentication_failed, 4) : ''; ?>
                             <?php echo validation_errors(); ?>
-                            <header class="pagetitle text-center">
-                            <h2 class="text-center">Share your survey link</h2>
+                            <header class="pagetitle">
+                            <h2>Share your survey link</h2>
                             </header>
                             <form class="form-horizontal" action="<?php echo $permalink; ?>/share_link" name="share_link" id="share_link" method="POST">
                                 <div ng-controller="add-recpt">
@@ -58,8 +58,8 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon">@</span>
                                                 <input type="email" required class="form-control" id="recipient" name="recipient[]" placeholder="One recipient per field">
-                                                <span class="input-group-addon">
-                                                    <button type="button" class="btn btn-default btn-primary" ng-click="addNewRecipient();"><i class="glyphicon glyphicon-plus"></i></button>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-info btn-share" ng-click="addNewRecipient();"><i class="glyphicon glyphicon-plus"></i></button>
                                                 </span>
                                                 
                                             </div>
@@ -74,8 +74,8 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon">@</span>
                                                 <input type="email" required class="form-control" id="{{ recipt.id }}" name="recipient[]" placeholder="One recipient per field" ng-model="recipt.value">
-                                                <span class="input-group-addon">
-                                                    <a href="javascript:void(0);" title="remove" class="btn btn-primary" ng-show="$last" ng-click="removeRecipient($index);"><i class="glyphicon glyphicon-minus"></i></a>
+                                                <span class="input-group-btn">
+                                                    <a href="javascript:void(0);" title="remove" class="btn btn-info btn-share" ng-show="$last" ng-click="removeRecipient($index);"><i class="glyphicon glyphicon-minus"></i></a>
                                                 </span>
                                             </div>
                                         </div>
@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-offset-3 col-sm-9">
-                                        <input type="submit" class="btn btn-danger btn-submit" value="Send" name="send_link">
+                                        <button type="submit" class="btn btn-danger btn-submit" value="Send" name="send_link">Send <i class="fa fa-share-square-o"></i></button>
                                     </div>
                                 </div>
                             </form>          
@@ -101,7 +101,7 @@
                     </div>
                 </div>
 
-                <section class="dase_orgat adminpage-block">
+                <section class="dase_orgat adminpage-block adminpage-manage-block">
                     <header class="pagetitle text-center">
                         <h2 class="text-center">Manage User</h2>
                     </header>
@@ -137,7 +137,7 @@
                     </header>
                     <div class="pagecontent">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped survey-table" id="tbExport"> 
+                            <table class="table table-bordered table-hover table-striped survey-table text-center" id="tbExport"> 
                                 <thead> 
                                     <tr class="info"> 
                                         <th>User</th>

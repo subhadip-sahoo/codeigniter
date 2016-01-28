@@ -127,6 +127,8 @@ class Register extends CI_Controller {
                 $str .= "Your Login details are as followes,\n";
                 $str .= "Username: ".$this->input->post('user_email', TRUE)."\n";
                 $str .= "Password: ".$this->input->post('password', TRUE)."\n\n";
+                $str .= "Pleaes find the login link below. Once you logged into your account you will be automatically redirected to the survey panel. \n";
+                $str .= "<a href='".  base_url() ."'>Click here to login</a>.\n\n";
                 $str .= "Thanks,\n".$sessionvar["user_organisation"];
                 $subject = 'SMG Health User Registration';
                 $message = nl2br($str);

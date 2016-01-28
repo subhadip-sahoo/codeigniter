@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <input type="submit" class="btn btn-info" value="Update Page" name="edit_page">
+                                <button type="submit" class="btn btn-danger" value="Update Page" name="edit_page"><i class="fa fa-pencil"></i> Update Page</button>
                             </div>
                         </div>
                     </form>

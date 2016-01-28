@@ -1,7 +1,7 @@
 <div class="dase_bord">
     <div class="container-fluid">
         <div class="row">
-            <?php $bs_cls =  (get_user_org_product($this->session->userdata('id_user')) <> 1) ? 'col-md-9 dasboard_detasl' : 'col-md-12'; ?>
+            <?php $bs_cls =  (get_user_org_product($this->session->userdata('id_user')) <> 1) ? 'col-md-12 dasboard_detasl' : 'col-md-12'; ?>
             <div class="<?php echo $bs_cls; ?>">
                 <section class="dase_orgat content-container">
                     <?php 
@@ -18,14 +18,14 @@
                         <h2>Thank you for giving bounce back survey</h2>
                     </header>
                     <div class="pagecontent">
-                        <p>Thank for participating in SMG Health’s Bounce Back Survey which will give you information on your strengths and weaknesses relating to your ability to ‘bounce back’ from difficult situations.   Following is a series of questions which will take you approximately 15 minutes to complete. Please consider each statement and select the option which best describes your response to each question.</p>
-                        <p>All information obtained in this questionnaire  remains strictly confidential. Your results will not be provided to your company other than in an aggregated and deidentified form if requested. Please view our Privacy Policy at  <a href="http://www.smghealth.com.au/privacy-policy/" target="_blank">http://www.smghealth.com.au/privacy-policy/</a> 
-                        <p>By proceeding to the questionnaire, you provide consent for SMG Health to collect this information and  understand that the information obtained during this Bounce Back Survey  is completely confidential, will be stored and analysed by SMG Health in accordance with the Privacy Act and not released to a 3rd party without prior consent.  </p>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
                     </div>
                 </section>
             </div>
             <?php if(get_user_org_product($this->session->userdata('id_user')) <> 1): ?>
-            <?php $this->load->view('site/common/employee_sidebar', $sidebar); ?>
+            <?php // $this->load->view('site/common/employee_sidebar', $sidebar); ?>
             <?php endif; ?>
         </div>
     </div>

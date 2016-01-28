@@ -1,7 +1,7 @@
 <div class="dase_bord clearfix">
     <div class="container-fluid">
         <div class="row">
-            <?php $bs_cls =  (get_user_org_product($this->session->userdata('id_user')) <> 1) ? 'col-md-9 dasboard_detasl' : 'col-md-12'; ?>
+            <?php $bs_cls =  (get_user_org_product($this->session->userdata('id_user')) <> 1) ? 'col-md-12 dasboard_detasl' : 'col-md-12'; ?>
             <div class="<?php echo $bs_cls; ?>">
                 <section class="dase_orgat clearfix">
                     <?php 
@@ -30,7 +30,7 @@
                                                 <?php if($options = $this->questionnaire_model->get_question_options($q->id_questionnaire)): ?>
                                                 <?php foreach ($options as $option) : ?>
                                                   <label class="btn btn-info">
-                                                    <input type="radio" name="answer_<?php echo $q->question_no; ?>" value="<?php echo $option->id_questionnaire; ?>" /> 
+                                                      <input type="radio" name="answer_<?php echo $q->question_no; ?>" value="<?php echo $option->id_questionnaire; ?>" checked="checked"/> 
                                                     <?php echo $option->question; ?>
                                                   </label>
                                                 <?php endforeach; ?>
@@ -58,16 +58,16 @@
                         </div>
                         <?php $count++; endforeach; ?>
                         <div class="form-group row" id="submit-box" style="display:none;">
-                            <div class="col-lg-10 col-lg-offset-2">
+                            <div class="col-lg-12 text-center">
                                 <input type="hidden" name="action" value="user_survey" />
-                                <button type="submit" name="submit_survey" id="submit_survey" class="btn btn-primary btn-success button-success"><span class="fa fa-check"></span> Submit</button>
+                                <button type="submit" name="submit_survey" id="submit_survey" class="btn btn-primary btn-success button-success">Submit <i class="fa fa-paper-plane-o"></i></button>
                             </div>
                         </div>
                     </form>
                 </section>
             </div>
             <?php if(get_user_org_product($this->session->userdata('id_user')) <> 1): ?>
-            <?php $this->load->view('site/common/employee_sidebar', $sidebar); ?>
+            <?php //$this->load->view('site/common/employee_sidebar', $sidebar); ?>
             <?php endif; ?>
         </div>
     </div>

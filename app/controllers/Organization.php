@@ -14,6 +14,8 @@ class Organization extends CI_Controller {
                 $this->session->set_userdata('org_slug', $org_details[0]->option_value);
                 $this->session->set_userdata('user_organisation', $org_details[0]->display_name);
                 $this->session->set_userdata('user_email', $org_details[0]->user_email);
+                redirect('register');
+                exit();
             }
             redirect();
             exit();

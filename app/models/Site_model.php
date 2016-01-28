@@ -262,4 +262,8 @@ class Site_model extends CI_Model {
         //print_r($q->result()); die;
         return $q->result();
     }
+    
+//    public function get_employee_details_by_id($user_id){
+//        $query = "SELECT su.*, (SELECT display_name FROM smg_users WHERE id_user = su.user_organization) AS org_name FROM `smg_users` AS su WHERE su.id_user = $user_id";
+//    }
 }

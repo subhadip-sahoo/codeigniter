@@ -247,6 +247,26 @@ class Dashboard extends CI_Controller {
                 }
                 $data['sidebar'] = get_employee_sidebar();
                 $data['id_user'] = $this->session->userdata('id_user');
+                if($user = $this->site_model->get_row('smg_users', array('id_user' => $this->session->userdata('id_user')))){
+                    $data['user'] = json_decode($user->other_details);
+                    $data['user_field'] = $user;
+                }
+                $org_other_details = $this->site_model->get_org_details_by_userid($user->user_organization);
+                foreach($org_other_details as $org_other_detail){
+                    switch ($org_other_detail->option_name) {
+                        case "organization_depertments":
+                            $data['user_depertment'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        case "organization_levels":
+                            $data['user_level'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        case "organization_location":
+                            $data['user_location'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 $header['title'] = 'Settings';
                 $header['display_name'] = $this->session->userdata('display_name');
                 $data['error'] = 'update_email_form';
@@ -287,6 +307,26 @@ class Dashboard extends CI_Controller {
                 }
                 $data['sidebar'] = get_employee_sidebar();
                 $data['id_user'] = $this->session->userdata('id_user');
+                if($user = $this->site_model->get_row('smg_users', array('id_user' => $this->session->userdata('id_user')))){
+                    $data['user'] = json_decode($user->other_details);
+                    $data['user_field'] = $user;
+                }
+                $org_other_details = $this->site_model->get_org_details_by_userid($user->user_organization);
+                foreach($org_other_details as $org_other_detail){
+                    switch ($org_other_detail->option_name) {
+                        case "organization_depertments":
+                            $data['user_depertment'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        case "organization_levels":
+                            $data['user_level'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        case "organization_location":
+                            $data['user_location'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 $header['title'] = 'Settings';
                 $header['display_name'] = $this->session->userdata('display_name');
                 $data['error'] = 'update_pass_form';
@@ -318,6 +358,79 @@ class Dashboard extends CI_Controller {
                     exit();
                 }
             }
+        }else if($this->input->post('update_details') <> NULL){
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters('<div role="alert" class="alert alert-danger alert-dismissibl"><button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">X</span></button>', '</div>'); 
+            $this->form_validation->set_rules('display_name', 'Name', 'trim|required');
+            $this->form_validation->set_rules('user_depertment', 'User departments', 'trim|required');
+            $this->form_validation->set_rules('user_location', 'User location', 'trim|required');
+            $this->form_validation->set_rules('user_level', 'User level', 'trim|required');
+            $this->form_validation->set_rules('user_gender', 'User gender', 'trim|required');
+            $this->form_validation->set_rules('user_age', 'User age', 'trim|required');
+            if($this->form_validation->run() === FALSE){
+                $this->load->model('site_model');
+                if($userdata = $this->site_model->get_userdata($this->session->userdata('id_user'))){
+                    $data['user_email'] = $userdata->user_email; 
+                }
+                $data['sidebar'] = get_employee_sidebar();
+                $data['id_user'] = $this->session->userdata('id_user');
+                if($user = $this->site_model->get_row('smg_users', array('id_user' => $this->session->userdata('id_user')))){
+                    $data['user'] = json_decode($user->other_details);
+                    $data['user_field'] = $user;
+                }
+                $org_other_details = $this->site_model->get_org_details_by_userid($user->user_organization);
+                foreach($org_other_details as $org_other_detail){
+                    switch ($org_other_detail->option_name) {
+                        case "organization_depertments":
+                            $data['user_depertment'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        case "organization_levels":
+                            $data['user_level'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        case "organization_location":
+                            $data['user_location'] = explode(",",$org_other_detail->option_value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                $header['title'] = 'Settings';
+                $header['display_name'] = $this->session->userdata('display_name');
+                $data['header'] = $header;
+                $data['template'] = 'site/screens/employee_settings';
+                $this->load->view('site/master_layout', $data);
+            }
+            else{
+                $this->load->model('site_model');
+                $userdetails_arr = array();
+                if($user = $this->site_model->get_row('smg_users', array('id_user' => $this->session->userdata('id_user')))){
+                    $other_details = json_decode($user->other_details);
+                    $userdetails_arr["user_org_id"] = $other_details->user_org_id;
+                    $userdetails_arr["user_organisation"] = $other_details->user_organisation;
+                }
+                $userdetails_arr["user_contact"] = $this->input->post('user_contact', TRUE);
+                $userdetails_arr["user_address"] = $this->input->post('user_address', TRUE);
+                $userdetails_arr["user_depertment"] = $this->input->post('user_depertment', TRUE);
+                $userdetails_arr["user_location"] = $this->input->post('user_location', TRUE);
+                $userdetails_arr["user_level"] = $this->input->post('user_level', TRUE);
+                $userdetails_arr["user_gender"] = $this->input->post('user_gender', TRUE);
+                $userdetails_arr["user_age"] = $this->input->post('user_age', TRUE);
+
+                $data = array(
+                    'display_name' => $this->input->post('display_name', TRUE),
+                    'other_details' => json_encode($userdetails_arr),
+                    'updated_at' => date(DATETIME_DATABASE_FORMAT)
+                );
+                if($this->site_model->update('smg_users', $data, array('id_user' => $this->session->userdata('id_user')))){
+                    $this->session->set_userdata('suc_msg_details', 'Details has been successfully updated');
+                    redirect("dashboard/settings");
+                    exit();
+                }else{
+                    $this->session->set_userdata('err_msg_details', 'There is an error occured. Please try again later.');
+                    redirect("dashboard/settings");
+                    exit();
+                }
+            }
         }else{
             $this->load->model('site_model');
             if($userdata = $this->site_model->get_userdata($this->session->userdata('id_user'))){
@@ -325,6 +438,26 @@ class Dashboard extends CI_Controller {
             }
             $data['sidebar'] = get_employee_sidebar();
             $data['id_user'] = $this->session->userdata('id_user');
+            if($user = $this->site_model->get_row('smg_users', array('id_user' => $this->session->userdata('id_user')))){
+                $data['user'] = json_decode($user->other_details);
+                $data['user_field'] = $user;
+            }
+            $org_other_details = $this->site_model->get_org_details_by_userid($user->user_organization);
+            foreach($org_other_details as $org_other_detail){
+                switch ($org_other_detail->option_name) {
+                    case "organization_depertments":
+                        $data['user_depertment'] = explode(",",$org_other_detail->option_value);
+                        break;
+                    case "organization_levels":
+                        $data['user_level'] = explode(",",$org_other_detail->option_value);
+                        break;
+                    case "organization_location":
+                        $data['user_location'] = explode(",",$org_other_detail->option_value);
+                        break;
+                    default:
+                        break;
+                }
+            }
             $header['title'] = 'Settings';
             $header['display_name'] = $this->session->userdata('display_name');
             $data['header'] = $header;

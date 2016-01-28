@@ -38,7 +38,7 @@ var tableToExcel = (function () {
                         </span>
                     </header>
                     <div class="search-report">
-                        <form action="search-report" name="report_filter" method="POST" id="report_filter" class="form-inline">
+                        <form action="<?php echo base_url(); ?>manage-report/search-report" name="report_filter" method="POST" id="report_filter" class="form-inline">
                             <?php if(isset($locations)): ?>
                             <div class="form-group">
                             <select name="location" class="form-control">
@@ -89,10 +89,10 @@ var tableToExcel = (function () {
                             </select>
                             </div>
                             <?php endif; ?>
-                            <button type="submit" name="filter_report" value="Filter"  class="btn btn-danger btn-filter">Filter <i class="fa fa-filter"></i></button>
+                            <button type="submit" name="filter_report" value="Filter"  class="btn btn-danger btn-filter"><i class="fa fa-filter"></i> Filter</button>
                             <a id="dlink"  style="display:none;"></a>
-                            <button type="button" onclick="tableToExcel('tbExport', 'Report Table', 'report.xls')" value="Export to Excel" class="btn btn-danger btn-filter">Export to Excel <i class="fa fa-table"></i></button>
-                        </form>
+                            <button type="button" onclick="tableToExcel('tbExport', 'Report Table', 'report.xls')" value="Export to Excel" class="btn btn-danger btn-filter"><i class="fa fa-table"></i> Export to Excel</button>
+                        </form> 
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped survey-table text-center" id="tbExport"> 

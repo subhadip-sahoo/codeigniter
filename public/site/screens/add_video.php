@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <input type="submit" class="btn btn-danger" value="Submit" name="add_video">
+                                <button type="submit" class="btn btn-danger" value="Submit" name="add_video"><i class="fa fa-plus-circle"></i> Submit</button>
                             </div>
                         </div>
                     </form>          

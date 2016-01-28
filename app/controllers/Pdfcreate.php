@@ -9,6 +9,9 @@ class Pdfcreate extends CI_Controller {
     }
     
     function index(){
+        date_default_timezone_set('Australia/NSW');
+        $ImageW = 105; //WaterMark Size
+        $ImageH = 30;
         $id_user = $this->uri->segment(2); 
         $created_at = urldecode($this->uri->segment(3));
         $display_name = $this->session->userdata('display_name');
@@ -49,7 +52,7 @@ class Pdfcreate extends CI_Controller {
             $pdf->setLanguageArray($l);
         }
 
-        $pdf->SetFont('helvetica', '', 48);
+        $pdf->SetFont('freeserif', '', 48);
         // remove default header
         $pdf->setPrintHeader(false);
 
@@ -71,10 +74,18 @@ class Pdfcreate extends CI_Controller {
         $pdf->setPageMark();
 
         // Print a text
-        $html = '<div style="position: relative; top:200px; right:0; left:0; text-align:center; padding: 50px 15px;">
+        $html = '<div style="position: relative; right:0; left:0; text-align:center; padding: 50px 15px;">
                                     <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">SMG Health Bounce Back Survey</h1>
-                                    <h2 style="margin: 0 0 0px; color: #333; font-weight: 500;font-size: 24px; text-transform: capitalize;">'.$getOrganization.'</h2>
-                                    <h3 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 18px;">'.$created_at.'</h3>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 0 0 20px; color: #333; font-weight: 500;font-size: 40px;">&nbsp;</h1>
+                                    <h1 style="margin: 100px 0 0px; color: #000; font-weight: 500;font-size: 24px; text-transform: capitalize;">'.$getOrganization.'</h1>
+                                    <h1 style="margin: 0 0 20px; color: #000; font-weight: 500;font-size: 18px;">'.$created_at.'</h1>
                                 </div>';
         $pdf->writeHTML($html, true, false, true, false, '');
 
@@ -83,9 +94,15 @@ class Pdfcreate extends CI_Controller {
         $img_file = Base_url().'assets/site/images/innerbanner.jpg';
         
         $pdf->AddPage();
-       
+        $myPageWidth = $pdf->getPageWidth();
+        $myPageHeight = $pdf->getPageHeight();
+        $myX = ( $myPageWidth / 2 ) - 50;
+        $myY = ( $myPageHeight / 2 ) -40;
+
+        $pdf->SetAlpha(0.09);
+        $pdf->Image(Base_url().'assets/site/images/dase_logo.png', $myX, $myY, $ImageW, $ImageH, '', '', '', true, 150);
+        $pdf->SetAlpha(1);
         $pdf->Image($img_file, 0, 0, 210, 47, '', '', '', false, 300, '', false, false, 0);
-        // set color for text stroke
         $pdf->SetDrawColor(255,0,0);
         $content = '<table cellspacing="0" cellpadding="0">
             <tr><td><img title="" alt="" src="'.Base_url().'assets/site/images/dase_logo.png"></td></tr>
@@ -96,8 +113,8 @@ class Pdfcreate extends CI_Controller {
         </table>';
         $content.='<div style="padding: 30px;">
                                 <p style="margin: 0 0 10px;color: #424242;font-weight: 500;font-size: 20px;">Introduction</p>
-                                <p>Thank you for completing your Bounce Back Survey. This report provides you with a summary of your results, makes some personalised recommendations and provides you with the tools to create an action plan.<br>
-                                Each dimension is presented individually with a description of your results and strategies for strengthening.</p>
+                                <p>Thank you for completing your Bounce Back Survey. This report provides you with a summary of your results, makes some personalised recommendations and provides you with the tools to create an action plan.</p>
+                                <p>Each dimension is presented individually with a description of your results and strategies for strengthening.</p>
                                 <p style="margin: 5px 0 10px;color: #424242;font-weight: 500;font-size: 20px;">Understanding Your Report</p>
                                 <p>Your report contains a description of the 10 dimensions of resilience for which you were assessed.  Your individual assessment results for each dimension is presented as a flag.  Refer to the table below when reading your report.</p>
                                 <p>Red flag: <img src="'.Base_url().'assets/site/images/close_icon.jpg" height="25" alt="">
@@ -150,7 +167,7 @@ class Pdfcreate extends CI_Controller {
                                 </table>
                             </div>';
        // $content.='<p style="padding: 75px 15px 0;text-align:center; border-top: solid 1px #E0E0E0; font-size: 10px;">&nbsp;<br>© 2016. SMG Health. All rights reserved.</p>';
-        $pdf->SetFont('helvetica', '', 12);
+        $pdf->SetFont('freeserif', '', 12);
         $pdf->setTextRenderingMode($stroke=0, $fill=true, $clip=false);
         //$pdf->writeHTMLCell(0, 10, '© 2016. SMG Health. All rights reserved.', 0, false, 'C', 0, '', 0, false, 'T', 'M');
         $pdf->writeHTML($content, true, false, false, false, '');
@@ -166,7 +183,14 @@ class Pdfcreate extends CI_Controller {
             $total = $getvalue1+$getvalue2+$getvalue3+$getvalue4;
             $getFeedback = $this->survey_model->getFeedback($getQuestion, $total);
             $pdf->AddPage();
+            $myPageWidth = $pdf->getPageWidth();
+            $myPageHeight = $pdf->getPageHeight();
+            $myX = ( $myPageWidth / 2 ) - 50;
+            $myY = ( $myPageHeight / 2 ) -40;
 
+            $pdf->SetAlpha(0.09);
+            $pdf->Image(Base_url().'assets/site/images/dase_logo.png', $myX, $myY, $ImageW, $ImageH, '', '', '', true, 150);
+            $pdf->SetAlpha(1);
             // set the starting point for the page content
             $pdf->setPageMark();
             $pdf->Image($img_file, 0, 0, 210, 47, '', '', '', false, 300, '', false, false, 0);
@@ -196,7 +220,7 @@ class Pdfcreate extends CI_Controller {
                                     </div>
                                 </div>
 ';
-            $pdf->SetFont('helvetica', '', 12);
+            $pdf->SetFont('freeserif', '', 12);
             $pdf->setTextRenderingMode($stroke=0, $fill=true, $clip=false);
             //$pdf->writeHTMLCell(0, 10, '© 2016. SMG Health. All rights reserved.', 0, false, 'C', 0, '', 0, false, 'T', 'M');
             $pdf->writeHTML($content, true, false, false, false, '');

@@ -96,46 +96,50 @@ class Manage_report extends CI_Controller {
     	if($levels !=""){
             $search.=',"user_level":"([^"]*)'.$levels.'([^"]*)"';
     	}
-    	$locations = array();
-        $ages = array();
-        $genders = array();
-        $departments = array();
-        $levels = array();
-        $all_surveys = $this->survey_model->get_all_survey();
-        foreach ($all_surveys as $survey) {
-            $other_details = json_decode($survey->other_details);
-            $locations[] = $other_details->user_location;
-            $ages[] = $other_details->user_age;
-            $genders[] = $other_details->user_gender;
-            $departments[] = $other_details->user_depertment;
-            $levels[] = $other_details->user_level;
-        }    
-    	$search_userid = $this->survey_model->get_all_userid(substr($search, 1));
-    	$report_html = '';
-    	if($search_userid){
-            foreach($search_userid as $suid){
-                $id_user = $suid ->id_user; 
-                $search_surveys_details = $this->survey_model->get_search_surveys_details($id_user);
-                foreach ($search_surveys_details as $search_survey) {
-                    $survey_data = unserialize($search_survey->survey_data);
-                    $display_name = $search_survey->display_name;
-                    $report_html .= "<tr>";
-                    $report_html .= "<td>$display_name</td>";
-                    foreach($survey_data as $key => $value){
-                        $getvalue1 = $this->survey_model->getvalue($value[0]);
-                        $getvalue2 = $this->survey_model->getvalue($value[1]);
-                        $getvalue3 = $this->survey_model->getvalue($value[2]);
-                        $getvalue4 = $this->survey_model->getvalue($value[3]);
-                        $total = $getvalue1+$getvalue2+$getvalue3+$getvalue4;
-                        $report_html .= "<td>$total</td>";
-                    }
-                    $report_html .= '</tr>';
-                }
-            }
+        if($search == ""){
+            redirect("manage_report");
         }else{
-            $report_html .= "<tr>";
-            $report_html .= "<td colspan='11'><center>No Data</center></td>";
-            $report_html .= '</tr>';
+        	$locations = array();
+            $ages = array();
+            $genders = array();
+            $departments = array();
+            $levels = array();
+            $all_surveys = $this->survey_model->get_all_survey();
+            foreach ($all_surveys as $survey) {
+                $other_details = json_decode($survey->other_details);
+                $locations[] = $other_details->user_location;
+                $ages[] = $other_details->user_age;
+                $genders[] = $other_details->user_gender;
+                $departments[] = $other_details->user_depertment;
+                $levels[] = $other_details->user_level;
+            }    
+        	$search_userid = $this->survey_model->get_all_userid(substr($search, 1));
+        	$report_html = '';
+        	if($search_userid){
+                foreach($search_userid as $suid){
+                    $id_user = $suid ->id_user; 
+                    $search_surveys_details = $this->survey_model->get_search_surveys_details($id_user);
+                    foreach ($search_surveys_details as $search_survey) {
+                        $survey_data = unserialize($search_survey->survey_data);
+                        $display_name = $search_survey->display_name;
+                        $report_html .= "<tr>";
+                        $report_html .= "<td>$display_name</td>";
+                        foreach($survey_data as $key => $value){
+                            $getvalue1 = $this->survey_model->getvalue($value[0]);
+                            $getvalue2 = $this->survey_model->getvalue($value[1]);
+                            $getvalue3 = $this->survey_model->getvalue($value[2]);
+                            $getvalue4 = $this->survey_model->getvalue($value[3]);
+                            $total = $getvalue1+$getvalue2+$getvalue3+$getvalue4;
+                            $report_html .= "<td>$total</td>";
+                        }
+                        $report_html .= '</tr>';
+                    }
+                }
+            }else{
+                $report_html .= "<tr>";
+                $report_html .= "<td colspan='11'><center>No Data</center></td>";
+                $report_html .= '</tr>';
+            }
         }
         $data['surveys'] = $report_html;
         $data['locations'] = array_unique($locations);

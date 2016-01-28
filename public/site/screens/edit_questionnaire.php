@@ -36,7 +36,7 @@
                             ?>
                         </div>
                         
-                        <p class="text-center"> <button type="submit" value="Update Questionnaire" class="btn btn-danger">Update Questionnaire <i class="fa fa-pencil"></i></button></p> 
+                        <p class="text-center"> <button type="submit" value="Update Questionnaire" class="btn btn-danger"><i class="fa fa-pencil"></i> Update Questionnaire</button></p> 
                     </div>
                     
                     </form>

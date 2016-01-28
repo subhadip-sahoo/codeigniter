@@ -39,7 +39,7 @@
                     <?php elseif($this->session->userdata('user_type') == 1): ?>
                     <?php echo anchor('settings', 'Settings', array('class' => 'btn log_out_button btn-setting', 'title' => 'Settings'));?> 
                     <?php elseif($this->session->userdata('user_type') == 2): ?>
-                    <?php echo anchor("organization/$permalink/settings", 'Settings', array('class' => 'btn log_out_button btn-setting', 'title' => 'Settings'));?> 
+                    <?php // echo anchor("organization/$permalink/settings", 'Settings', array('class' => 'btn log_out_button btn-setting', 'title' => 'Settings'));?> 
                     <?php endif; ?>
                     <?php echo anchor('dashboard/logout', 'Logout', array('class' => 'btn log_out_button btn-logout', 'title' => 'Logout'));?>
                 </div> 

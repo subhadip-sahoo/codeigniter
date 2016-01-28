@@ -62,7 +62,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-9">
-                                <input type="submit" class="btn btn-info" value="Update Feedback" name="edit_feedback">
+                                <button type="submit" class="btn btn-danger" value="Update Feedback" name="edit_feedback"><i class="fa fa-pencil"></i> Update Feedback</button>
                             </div>
                         </div>
                     </form>

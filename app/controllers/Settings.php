@@ -101,7 +101,7 @@ class Settings extends CI_Controller {
                 $data['user_email'] = $userdata->user_email; 
             }
             $data['sidebar'] = get_employee_sidebar();
-            $data['id_user'] = $this->session->userdata('id_user');
+            $data['id_user'] = $this->session->userdata('id_user');            
             $header['title'] = 'Settings';
             $header['display_name'] = $this->session->userdata('display_name');
             $data['header'] = $header;
@@ -110,4 +110,3 @@ class Settings extends CI_Controller {
         }
     }
 }
-

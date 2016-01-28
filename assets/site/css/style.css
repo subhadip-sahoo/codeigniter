@@ -1010,3 +1010,37 @@ footer a {
     color: #fff;
     border-color: #61A9A9;
 }
+.btn-share {
+	background-color: #0C8281;
+	color: #fff;
+}
+.btn-share:hover {
+	background-color: #21B1B0;
+	color: #fff;
+}
+.adminpage-manage-block {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.adminpage-manage-block .table>tbody>tr>td {
+	border-color: #9AB5B5;
+}
+.survey-table th {
+	text-align: center;
+}
+.organization-setting-block .dase_orgat {
+	min-height: 328px;
+}
+.panel-sidebar .panel-heading .panel-title {
+	/*position: relative;*/
+}
+.panel-sidebar .panel-heading .panel-title:before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 14px;
+    bottom: -20px;
+	border-top: solid 10px #18A7A5;
+	border-left: solid 10px transparent;
+	border-right: solid 10px transparent;
+	border-bottom: solid 10px transparent;
+}

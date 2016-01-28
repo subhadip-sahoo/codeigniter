@@ -38,7 +38,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <input type="submit" class="btn btn-danger btn-submit" value="Submit" name="update_email" ng-disabled="change_email.user_email.$dirty && change_email.user_email.$invalid">
+                                    <button type="submit" class="btn btn-danger btn-submit" value="Submit" name="update_email" ng-disabled="change_email.user_email.$dirty && change_email.user_email.$invalid">Submit <i class="fa fa-paper-plane-o"></i></button>
                                 </div>
                             </div>
                         </form> 
@@ -84,7 +84,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <input type="submit" class="btn btn-danger btn-submit" value="Submit" name="update_pass" >
+                                    <button type="submit" class="btn btn-danger btn-submit" value="Submit" name="update_pass">Submit <i class="fa fa-paper-plane-o"></i></button>
                                 </div>
                             </div>
                         </form> 
