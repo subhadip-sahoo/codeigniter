@@ -48,7 +48,7 @@
                             <?php echo (isset($authentication_failed)) ? message_alert($authentication_failed, 4) : ''; ?>
                             <?php echo validation_errors(); ?>
                             <header class="pagetitle">
-                            <h2>Share your survey link</h2>
+                                <h2>Share your survey link</h2>
                             </header>
                             <form class="form-horizontal" action="<?php echo $permalink; ?>/share_link" name="share_link" id="share_link" method="POST">
                                 <div ng-controller="add-recpt">
@@ -102,8 +102,8 @@
                 </div>
 
                 <section class="dase_orgat adminpage-block adminpage-manage-block">
-                    <header class="pagetitle text-center">
-                        <h2 class="text-center">Manage User</h2>
+                    <header class="pagetitle">
+                        <h2>Manage User</h2>
                     </header>
                     <div class="pagecontent">
                         <?php /* foreach($users as $user): ?>
@@ -132,8 +132,8 @@
                 </section>
 
                 <section class="dase_orgat adminpage-block">
-                    <header class="pagetitle text-center">
-                        <h2 class="text-center">Survey Report</h2>
+                    <header class="pagetitle">
+                        <h2>Survey Report</h2>
                     </header>
                     <div class="pagecontent">
                         <div class="table-responsive">

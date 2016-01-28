@@ -745,11 +745,11 @@ footer a {
 	padding-bottom: 40px;
 }
 
-.sharelink-block .pagetitle {
+/*.sharelink-block .pagetitle {
 	margin-left: 0;
 	margin-right: 0;
 	border-left: none;
-}
+}*/
 /*.sharelink-block .form-control {
 	height: 48px;
 }*/
@@ -780,11 +780,11 @@ footer a {
 	padding-top: 40px;
 	padding-bottom: 40px;
 }
-.adminpage-block .pagetitle {
+/*.adminpage-block .pagetitle {
 	margin-left: 0;
 	margin-right: 0;
 	border-left: none;
-}
+}*/
 .survey-table {
 	font-size: 14px;
 }
@@ -1043,4 +1043,14 @@ footer a {
 	border-left: solid 10px transparent;
 	border-right: solid 10px transparent;
 	border-bottom: solid 10px transparent;
+}
+.modal-header.bg-info {
+	background-color: #0C8281;
+	color: #fff;
+}
+.modal-header.bg-info a {
+	color: #fff;
+}
+.modal-header.bg-info .close {
+	color: #fff;
 }
